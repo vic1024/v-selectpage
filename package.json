@@ -1,7 +1,7 @@
 {
   "name": "vic-fork-vue-select-page",
   "description": "fork the v-selectpage, root component can pass page param to sub component, and exec some method.",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "author": "vic1024 <757171917@qq.com>",
   "license": "MIT",
   "main": "dist/m-v-selectpage.js",

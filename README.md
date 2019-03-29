@@ -15,16 +15,13 @@
 </p>
 <br><br>
 
-
 ## 说明
-​       此项目是一个v-selectpage的fork项目，只是v-selectpage很多不适用于本人，所以稍加改制，主要是将分页网络获取自己手动操作了，由父组件下发静态数据到本组件中进行操作。并且内部picked方法增加了locked锁定，避免了input的二次提交。
-
+​此项目是一个v-selectpage的fork项目，只是v-selectpage很多不适用于本人，所以稍加改制，主要是将分页网络获取自己手动操作了，由父组件下发静态数据到本组件中进行操作。并且内部picked方法增加了locked锁定，避免了input的二次提交。
 
 
 ## 注意
 
 参数和事件都和v-selectpage组件一样，只是新增了几个参数和事件。
-
 
 
 ## 新增参数
@@ -38,13 +35,17 @@
 | total-rows    | true  | Number  | 0      | 数据量总数         |
 
 
-
 ## 新增事件
 
 | 事件名 | 传入参数 | 传入类型 | 返回 | 备注                                       |
 | ------ | -------- | -------- | ---- | ------------------------------------------ |
 | page   | pagenum  | Number   | 无   | 翻页事件，可在此函数直接网络获取指定页数据 |
 
+
+## 本项目
+
+- [GitHub](https://github.com/vic1024/v-selectpage)
+- [NPM](https://www.npmjs.com/package/vic-fork-vue-select-page)
 
 
 ## 原项目
