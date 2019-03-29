@@ -95,6 +95,28 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+
+        // 新增参数
+        pageNumber:{
+            type: Number,
+            default: 1
+        },
+        totalRows:{
+            type: Number,
+            default: 0
+        },
+        showTitle: {
+            type: Boolean,
+            default: false
+        },
+        showTitleBtn: {
+            type: Boolean,
+            default: false
+        },
+        showSearch: {
+            type: Boolean,
+            default: false
         }
     }
 };

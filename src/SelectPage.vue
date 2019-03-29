@@ -13,19 +13,19 @@
         <!-- drop down list -->
         <v-dropdown ref="drop" @show-change="showChange" :width="width" :align="rtl?'right':'left'" >
             <!-- header bar -->
-            <div class="sp-header">
-                <h3 v-html="headerTitle"></h3>
-                <button type="button" :title="i18n.select_all" class="sp-select-all-btn"
+            <div class="sp-header" v-if="showTitle && showTitleBtn">
+                <h3 v-html="headerTitle" v-if="showTitle"></h3>
+                <button v-if="showTitleBtn" type="button" :title="i18n.select_all" class="sp-select-all-btn"
                         @click="pickPage(true)" v-if="multiple"><i class="sp-iconfont sp-icon-select-all"></i></button>
-                <button type="button" :title="i18n.unselect_all" class="sp-remove-all-btn" v-if="multiple"
+                <button v-if="showTitleBtn" type="button" :title="i18n.unselect_all" class="sp-remove-all-btn" v-if="multiple"
                         @click="pickPage(false)" ><i class="sp-iconfont sp-icon-unselect-all"></i></button>
-                <button type="button" :title="i18n.clear_all" class="sp-clear-all-btn"
+                <button v-if="showTitleBtn" type="button" :title="i18n.clear_all" class="sp-clear-all-btn"
                         @click="remove" ><i class="sp-iconfont sp-icon-clear"></i></button>
-                <button type="button" :title="i18n.close_btn" @click="close"
+                <button v-if="showTitleBtn" type="button" :title="i18n.close_btn" @click="close"
                         class="sp-close-btn"><i class="sp-iconfont sp-icon-close"></i></button>
             </div>
             <!-- search bar -->
-            <div class="sp-search">
+            <div class="sp-search" v-if="showSearch">
                 <input type="text" autocomplete="off" ref="search" v-model="search"
                        @keyup="processKey" @keydown.stop="processControl" class="sp-search-input">
             </div>
@@ -49,7 +49,7 @@
             </div>
             <!-- pagination bar -->
             <v-pagination ref="page" :total-row="totalRows" v-if="pagination"
-                          v-model="pageNumber" :page-size="pageSize" />
+                          v-model="localPageNumber" :page-size="pageSize" />
         </v-dropdown>
     </div>
 </template>
@@ -89,9 +89,10 @@
                 list: [],
                 sortedList: null,
                 picked: [],
-
-                pageNumber: 1,
-                totalRows: 0
+                locked: false,
+                // pageNumber: 1,
+                // totalRows: 0
+                localPageNumber: this.pageNumber,
             };
         },
         provide(){
@@ -105,9 +106,14 @@
         },
         watch: {
             picked(val){
-                if(this.message && this.maxSelectLimit && val.length < this.maxSelectLimit) this.message = '';
-                this.$emit('input', val.map(value=>value[this.keyField]).join(','));
-                this.$emit('values', this.picked.concat());
+                if(!this.locked) {
+                    this.locked = true
+                    if(this.message && this.maxSelectLimit && val.length < this.maxSelectLimit) this.message = '';
+                    this.$emit('input', val.map(value=>value[this.keyField]).join(','));
+                    this.$emit('values', this.picked.concat());
+                } else {
+                    this.locked = false
+                }
             },
             value: {
                 handler(){
@@ -122,7 +128,13 @@
                 else this.initSelection();
             },
             pageNumber(){
-                this.populate();
+                // this.populate();
+                this.localPageNumber = this.pageNumber;
+            },
+            localPageNumber(){
+                if(this.localPageNumber !== this.pageNumber) {
+                    this.$emit('page', this.localPageNumber);
+                }
             },
             disabled(val){
                 if(val && this.show) this.close();

@@ -12,12 +12,12 @@
                     <i class="sp-iconfont sp-icon-previous"></i>
                 </a>
             </li>
-            <li :class="{'sp-disabled':value===totalPage}" class="sp-right sp-page-next" :title="i18n.last">
+            <li :class="{'sp-disabled':value===totalPage || totalPage===0}" class="sp-right sp-page-next" :title="i18n.last">
                 <a href="javascript:void(0);" @click="switchPage('last')" >
                     <i class="sp-iconfont sp-icon-last"></i>
                 </a>
             </li>
-            <li :class="{'sp-disabled':value===totalPage}" class="sp-right sp-page-last" :title="i18n.next">
+            <li :class="{'sp-disabled':value===totalPage || totalPage===0}" class="sp-right sp-page-last" :title="i18n.next">
                 <a href="javascript:void(0);" @click="switchPage('next')" >
                     <i class="sp-iconfont sp-icon-next"></i>
                 </a>
@@ -59,10 +59,10 @@
                             if(this.value!==1) num = this.value - 1;
                             break;
                         case 'next':
-                            if(this.value!==this.totalPage) num = this.value + 1;
+                            if(this.totalPage!== 0 && this.value!==this.totalPage) num = this.value + 1;
                             break;
                         case 'last':
-                            if(this.value!==this.totalPage) num = this.totalPage;
+                            if(this.totalPage!== 0 && this.value!==this.totalPage) num = this.totalPage;
                             break;
                     }
                 }else if(typeof(pNum) === 'number') num = pNum;

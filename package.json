@@ -1,10 +1,10 @@
 {
-  "name": "v-selectpage",
-  "description": "A powerful selector for Vue2, list or table view of pagination, use tags for multiple selection, i18n and server side resources supports",
-  "version": "2.0.2",
-  "author": "TerryZ <terry5@foxmail.com>",
+  "name": "vic-fork-vue-select-page",
+  "description": "fork the v-selectpage, root component can pass page param to sub component, and exec some method.",
+  "version": "1.0.13",
+  "author": "vic1024 <757171917@qq.com>",
   "license": "MIT",
-  "main": "dist/v-selectpage.js",
+  "main": "dist/m-v-selectpage.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
@@ -47,6 +47,6 @@
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^2.9.1"
   }
 }

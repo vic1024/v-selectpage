@@ -15,13 +15,15 @@ export default {
         inputFocus(){
             this.$nextTick(()=>{
                 if(!this.show) return;
-                //fix open drop down list and set input focus, the page will scroll to top
-                //that.$refs.search.focus({preventScroll:true}); only work on Chrome and EDGE
-                if(this.isChrome() || this.isEdge()) this.$refs.search.focus({preventScroll:true});
-                else{
-                    const x = window.pageXOffset, y = window.pageYOffset;
-                    this.$refs.search.focus();
-                    if(window.pageYOffset !== y) setTimeout(()=>{ window.scrollTo(x, y); }, 0);
+                if(this.showsearch) {
+                    //fix open drop down list and set input focus, the page will scroll to top
+                    //that.$refs.search.focus({preventScroll:true}); only work on Chrome and EDGE
+                    if(this.isChrome() || this.isEdge()) this.$refs.search.focus({preventScroll:true});
+                    else{
+                        const x = window.pageXOffset, y = window.pageYOffset;
+                        this.$refs.search.focus();
+                        if(window.pageYOffset !== y) setTimeout(()=>{ window.scrollTo(x, y); }, 0);
+                    }
                 }
             });
         },
@@ -112,12 +114,14 @@ export default {
                     const preIndex = this.list.findIndex(val => Object.is(val, previous[previous.length-1]));
                     if(preIndex !== -1) this.highlight = preIndex;
                 }
+                this.$emit('changepage', this.pageNumber);
             }
         },
         next(){
             if(this.highlight < (this.list.length - 1)){
                 const nextIndex = this.list.findIndex((val, idx)=>(idx > this.highlight) && !this.picked.includes(val));
                 if(nextIndex !== -1) this.highlight = nextIndex;
+                this.$emit('changepage', this.pageNumber);
             }
         },
         renderCell(row){
@@ -172,12 +176,13 @@ export default {
                     let list = this.sortedList?this.sortedList.concat():this.data.concat();
                     if(this.search)
                         list = list.filter(val => val[this.searchColumn].toLowerCase().includes(this.search.toLowerCase()));
-                    this.totalRows = list.length;
+                    // this.totalRows = list.length;
 
-                    if(this.pagination){
-                        const start = (this.pageNumber - 1) * this.pageSize, end = start + this.pageSize -1;
-                        this.list = list.filter((val,index)=>index >= start&&index <= end);
-                    }else this.list = list;
+                    // if(this.pagination){
+                    //     const start = (this.pageNumber - 1) * this.pageSize, end = start + this.pageSize -1;
+                    //     this.list = list.filter((val,index)=>index >= start&&index <= end);
+                    // }else this.list = list;
+                    this.list = list;
                 }else if(typeof this.data === 'string') this.remote(false);
                 if(this.search) this.lastSearch = this.search;
                 this.highlight = -1;
@@ -221,7 +226,7 @@ export default {
                             if(tmpObj && Object.keys(tmpObj).length){
                                 if(!init){//load new page data list
                                     this.list = tmpObj.list;
-                                    this.totalRows = tmpObj.totalRow;
+                                    // this.totalRows = tmpObj.totalRow;
                                 }else this.picked = tmpObj.list;//the selected item info
                             }
                         }
@@ -230,7 +235,8 @@ export default {
             }
         },
         pageChange(pNum){
-            this.pageNumber = pNum;
+            // this.pageNumber = pNum;
+            this.localPageNumber = pNum;
             this.populate();
         },
         initSelection(){
@@ -253,7 +259,7 @@ export default {
                 const list = this.sortedList?this.sortedList.concat():this.data.concat(),
                     index = list.findIndex(val => String(val[this.keyField]) === this.value);
                 if(index >= 0){
-                    this.pageNumber = Math.ceil((index + 1) / this.pageSize);
+                    // this.pageNumber = Math.ceil((index + 1) / this.pageSize);
                 }
             }
         },
